@@ -1,5 +1,6 @@
 import React from "react";
 import Identicon from "identicon.js";
+import Blockies from "react-blockies";
 
 export const NavBar = ({ account, ethBalance }) => {
   return (
@@ -13,27 +14,16 @@ export const NavBar = ({ account, ethBalance }) => {
         >
           Dacether Swap
         </a>
-        <ul className="navbar-nav" px-3>
-          <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-            <small className="text-secondary">
-              <small id="account">{account}</small>
-            </small>
-            {account ? (
-              <img
-                className="ml-2"
-                width="30"
-                height="30"
-                src={`data:image/png;base64,${new Identicon(
-                  account,
-                  30
-                ).toString()}`}
-                alt="Dacether"
-              />
-            ) : (
-              <span>No avatar</span>
-            )}
-          </li>
-        </ul>
+        <div style={{ display: "flex" }}>
+          <p id="account" style={{ color: "#fff", margin: "0" }}>
+            {account}
+          </p>
+          {account ? (
+            <Blockies seed={account.toString()} />
+          ) : (
+            <span>No avatar</span>
+          )}
+        </div>
       </nav>
     </div>
   );

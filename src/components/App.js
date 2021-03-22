@@ -42,6 +42,7 @@ const App = () => {
     // Load dacether
     const networkId = await web3.eth.net.getId();
     const dacetherData = Dacether.networks[networkId];
+    debugger;
     if (dacetherData) {
       const dacether = new web3.eth.Contract(
         Dacether.abi,
@@ -49,11 +50,11 @@ const App = () => {
       );
       setDacether(dacether);
 
-      let dacetherBalance = await dacether.methods
-        .balanceOf(getAccounts[0])
-        .call(); // talk to smart contract and his functions to fetch data from the blockchain
+      let daceBalance = await dacether.methods.balanceOf(getAccounts[0]).call(); // talk to smart contract and his functions to fetch data from the blockchain
 
-      setDacetherBalance(dacetherBalance.toString());
+      console.log(daceBalance);
+
+      setDacetherBalance(daceBalance.toString());
     } else {
       window.alert("Dacether contract not deployed to detected network");
     }
