@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import Web3 from "web3";
-import { NavBar } from "./NavBar";
-import { Main } from "./Main";
-import EthSwap from "../abis/EthSwap.json";
-import Dacether from "../abis/Dacether.json";
+import React, { useEffect, useState } from 'react';
+import Web3 from 'web3';
+import { NavBar } from './NavBar';
+import { Main } from './Main';
+import EthSwap from '../abis/EthSwap.json';
+import Dacether from '../abis/Dacether.json';
 
-import "./App.css";
+import './App.css';
 
 const App = () => {
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState('');
   const [dacether, setDacether] = useState({});
   const [ethSwap, setEthSwap] = useState({});
   const [ethBalance, setEthBalance] = useState(0);
@@ -24,7 +24,7 @@ const App = () => {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
       window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask"
+        'Non-Ethereum browser detected. You should consider trying MetaMask'
       );
     }
   };
@@ -32,7 +32,6 @@ const App = () => {
   // load data from blockchain
   const loadData = async () => {
     const web3 = window.web3;
-
     const getAccounts = await web3.eth.getAccounts();
     setAccount(getAccounts[0]);
 
@@ -41,8 +40,11 @@ const App = () => {
 
     // Load dacether
     const networkId = await web3.eth.net.getId();
+    console.log(networkId);
     const dacetherData = Dacether.networks[networkId];
-    debugger;
+    console.log(Dacether);
+    console.log(dacetherData);
+
     if (dacetherData) {
       const dacether = new web3.eth.Contract(
         Dacether.abi,
@@ -56,7 +58,7 @@ const App = () => {
 
       setDacetherBalance(daceBalance.toString());
     } else {
-      window.alert("Dacether contract not deployed to detected network");
+      window.alert('Dacether contract not deployed to detected network');
     }
 
     // Load ethSwap
@@ -65,7 +67,7 @@ const App = () => {
       const ethData = new web3.eth.Contract(EthSwap.abi, ethSwapData.address);
       setEthSwap(ethData);
     } else {
-      window.alert("EthSwap contract not deployed to detected network");
+      window.alert('EthSwap contract not deployed to detected network');
     }
 
     setLoading(false);
@@ -76,7 +78,7 @@ const App = () => {
     ethSwap.methods
       .buyDacether()
       .send({ value: etherAmount, from: account })
-      .on("transactionHash", (hash) => {
+      .on('transactionHash', (hash) => {
         setLoading(false);
       });
   };
@@ -86,11 +88,11 @@ const App = () => {
     dacether.methods
       .approve(ethSwap.address, dacetherAmount)
       .send({ from: account })
-      .on("transactionHash", (hash) => {
+      .on('transactionHash', (hash) => {
         ethSwap.methods
           .sellDacether(dacetherAmount)
           .send({ from: account })
-          .on("transactionHash", (hash) => {
+          .on('transactionHash', (hash) => {
             setLoading(false);
           });
       });
@@ -104,16 +106,16 @@ const App = () => {
   return (
     <div>
       <NavBar account={account} />
-      <div className="container-fluid mt-5">
-        <div className="row">
+      <div className='container-fluid mt-5'>
+        <div className='row'>
           <main
-            role="main"
-            className="col-lg-12 ml-auto mr-auto"
-            style={{ maxWidth: "600px" }}
+            role='main'
+            className='col-lg-12 ml-auto mr-auto'
+            style={{ maxWidth: '600px' }}
           >
-            <div className="content mr-auto ml-auto">
+            <div className='content mr-auto ml-auto'>
               {loading ? (
-                <p id="loader" className="text-center">
+                <p id='loader' className='text-center'>
                   Loading...
                 </p>
               ) : (
